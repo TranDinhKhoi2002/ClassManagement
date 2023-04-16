@@ -3,11 +3,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {getDBConnection, saveUser} from '../db/db-services';
 import LoginForm from '../components/LoginForm';
-
-const initUser = {
-  username: 'user',
-  password: '123456',
-};
+import {initUser} from '../data';
 
 function LoginScreen({navigation}) {
   useEffect(() => {

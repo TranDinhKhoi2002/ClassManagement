@@ -96,7 +96,6 @@ export const checkUserExists = async (db, user) => {
   results.forEach(result => {
     for (let index = 0; index < result.rows.length; index++) {
       const {username, password} = result.rows.item(index);
-      console.log(password, user.password);
       if (username === user.username && password === user.password) {
         isValidUser = true;
         break;

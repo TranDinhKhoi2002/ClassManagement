@@ -8,31 +8,7 @@ import {
   saveClasses,
   saveStudents,
 } from '../db/db-services';
-
-const initClasses = [
-  {
-    id: 'C001',
-    name: 'Class 001',
-  },
-];
-
-const initStudents = [
-  {
-    id: 'S001',
-    name: 'Jim Rohn',
-    birthdate: new Date(),
-  },
-  {
-    id: 'S002',
-    name: 'Jack King',
-    birthdate: new Date(),
-  },
-  {
-    id: 'S003',
-    name: 'Ketty Myth',
-    birthdate: new Date(),
-  },
-];
+import {initClasses, initStudents} from '../data';
 
 function ClassesScreen() {
   const [classes, setClasses] = useState([]);
