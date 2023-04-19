@@ -19,13 +19,19 @@ function LoginForm() {
   const navigation = useNavigation();
 
   const handleLogin = async () => {
-    const db = await getDBConnection();
-    const isValidUser = await checkUserExists(db, {username, password});
-    if (isValidUser) {
-      navigation.navigate(screenNames.classesScreen.name);
-    } else {
-      Alert.alert('Login failed', 'Username or password is incorrect', [
-        {text: 'Ok', style: 'cancel'},
+    try {
+      const db = await getDBConnection();
+      const isValidUser = await checkUserExists(db, {username, password});
+      if (isValidUser) {
+        navigation.navigate(screenNames.classesScreen.name);
+      } else {
+        Alert.alert('Login failed', 'Username or password is incorrect', [
+          {text: 'Ok', style: 'cancel'},
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Login failed', 'Something went wrong, please try again', [
+        {text: 'Cancel', style: 'cancel'},
       ]);
     }
   };

@@ -1,32 +1,17 @@
 /* eslint-disable prettier/prettier */
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
-import {getDBConnection, getStudents} from '../db/db-services';
 import ClassItem from '../components/ClassItem';
 import {ListItem, Card, Avatar} from 'react-native-elements';
 
 function ClassDetailsScreen({route}) {
-  const [students, setStudents] = useState([]);
-
-  const classItem = route.params.classItem;
-
-  useEffect(() => {
-    const getStudentList = async () => {
-      const db = await getDBConnection();
-      const existingStudents = await getStudents(db, classItem.id);
-      if (existingStudents) {
-        setStudents(existingStudents);
-      }
-    };
-
-    getStudentList();
-  }, [classItem.id]);
+  const {classItem, students, order} = route.params;
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Classe Details</Text>
       <Text style={styles.subTitle}>Class Information</Text>
-      <ClassItem item={classItem} />
+      <ClassItem item={classItem} order={order} />
 
       <Text style={[styles.subTitle, {marginTop: 30}]}>Student List</Text>
       <FlatList

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Alert} from 'react-native';
 import ClassItem from '../components/ClassItem';
 import {
   getClasses,
@@ -15,18 +15,26 @@ function ClassesScreen() {
 
   useEffect(() => {
     const loadData = async () => {
-      const db = await getDBConnection();
+      try {
+        const db = await getDBConnection();
 
-      const existingClasses = await getClasses(db);
-      if (existingClasses.length > 0) {
-        setClasses(existingClasses);
-      } else {
-        await saveClasses(db, initClasses);
-        setClasses(initClasses);
-      }
+        const existingClasses = await getClasses(db);
+        if (existingClasses.length > 0) {
+          setClasses(existingClasses);
+        } else {
+          await saveClasses(db, initClasses);
+          setClasses(initClasses);
+        }
 
-      for (const classItem of initClasses) {
-        await saveStudents(db, classItem.id, initStudents);
+        for (const classItem of initClasses) {
+          await saveStudents(db, classItem.id, initStudents);
+        }
+      } catch (error) {
+        Alert.alert(
+          'Something went wrong',
+          'Failed to load classes information',
+          [{text: 'Cancel', style: 'cancel'}],
+        );
       }
     };
 
@@ -40,7 +48,9 @@ function ClassesScreen() {
         data={classes}
         style={styles.listContainer}
         keyExtractor={item => item.id}
-        renderItem={({item}) => <ClassItem item={item} />}
+        renderItem={({item, index}) => (
+          <ClassItem item={item} order={index + 1} />
+        )}
       />
     </View>
   );

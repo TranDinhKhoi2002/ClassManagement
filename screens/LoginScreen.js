@@ -1,18 +1,24 @@
 /* eslint-disable prettier/prettier */
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Alert} from 'react-native';
 import {getDBConnection, saveUser} from '../db/db-services';
 import LoginForm from '../components/LoginForm';
 import {initUser} from '../data';
 
 function LoginScreen({navigation}) {
   useEffect(() => {
-    const initianceUser = async () => {
-      const db = await getDBConnection();
-      await saveUser(db, initUser);
+    const initializeUser = async () => {
+      try {
+        const db = await getDBConnection();
+        await saveUser(db, initUser);
+      } catch (error) {
+        Alert.alert('Something went wrong', 'Failed to initialize user', [
+          {text: 'Cancel', style: 'cancel'},
+        ]);
+      }
     };
 
-    initianceUser();
+    initializeUser();
   }, []);
 
   return (
